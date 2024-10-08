@@ -1,8 +1,12 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Context from "./Context";
 
 function Register(){
     
+    const {setActualUser} = useContext(Context);
+    const redirect = useNavigate();
+
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
@@ -11,6 +15,7 @@ function Register(){
         .then(data => {
             setAllUsers(data);
         })
+        .catch(err => console.log(err))
     }, []);
 
     const [name, setName] = useState("");
@@ -20,15 +25,33 @@ function Register(){
 
     const register = (e) => {
         e.preventDefault();
-        console.log('submitea')
 
+        if (name.trim() === "") {
+            setStatus("Falta el nombre");
+            return;
+        }
+        if (password.trim() === "") {
+            setStatus("Falta la contraseña");
+            return;
+        }
 
+        const userFound = allUsers.find(data => data.name.toLowerCase() === name)
+
+        console.log(userFound)
+
+        if(userFound == null){
+
+            redirect('/')
+        }
+        else{
+            setStatus("Este usuario ya existe");
+        }
     }
 
     return (
         <div className="bg-slate-700">
             <Link to='/'>
-                <button className="bg-orange-300 rounded-full flex items-center justify-center w-[50px] h-[50px] p-3 absolute top-5 left-5 text-white">
+                <button className="bg-orange-400 rounded-full flex items-center justify-center w-[50px] h-[50px] p-3 absolute top-5 left-5 text-white">
                    <h1 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}>X</h1>
                 </button>
             </Link>
@@ -61,8 +84,7 @@ function Register(){
                         </button>
                     </div>
                 </form>
-
-                <h1 className="text-red-600 p-4">{status}</h1>
+                    <h1 className="text-red-600 p-4 mt-3">{status || '\u00A0'}</h1>
             </div>
         </div>
     
