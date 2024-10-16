@@ -9,6 +9,9 @@
   "author": "Adrin",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.21.0"
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
+    "mysql2": "^3.11.3",
+    "sequelize": "^6.37.4"
   }
 }
