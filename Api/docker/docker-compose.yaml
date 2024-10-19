@@ -1,9 +1,9 @@
-version: "3.9"
 services:
-
   node-application:
     build: .
     container_name: node-application
     ports:
       - "9000:3006"
+    volumes:
+    - ./:/usr/src/app
     restart: always
