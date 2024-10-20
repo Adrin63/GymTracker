@@ -26,13 +26,13 @@ router.post('/login', async (req, res) => {
     const { name, password } = req.body;
 
     try {
-      const user = await User.findOne({ where: { email } }); // Cerca l'usuari pel seu email
+      const user = await User.findOne({ where: { name } });
       if (!user) {
-        return res.status(404).json({ error: 'User no trobat' });
+        return res.status(404).json({ error: 'Usuario no encontrado' });
       }
-      const passwordMatch = await bcrypt.compare(password, user.password); // Compara la contrasenya proporcionada amb la contrasenya encriptada de l'usuari
+      const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
-        return res.status(401).json({ error: 'Password incorrecte' }); // Retorna error 401 si la contrasenya és incorrecta
+        return res.status(401).json({ error: 'Contrasenya mal' });
       }
 
       res.json({ name: user.name });
@@ -48,15 +48,14 @@ router.post('/users', async (req, res) => await createItem(req, res, Users));
 router.post('/register', async (req, res) => {
     try {
       const { name, password } = req.body;
-      if (!name || !password) {
-        return res.status(400).json({ error: 'no ha puesto nombre o constraseña' });
-      }
+    
+      console.log('me llega', name, password)
       const existingUser = await Users.findOne({ where: { name } });
       if (existingUser) {
-        return res.status(400).json({ error: 'Nombre existe' });
+        return res.status(402).json({ error: 'Nombre existe' });
       }
 
-      const newUser = await User.create({ name, password });
+      const newUser = await Users.create({ name, password });
 
       res.json({ message: 'Register hecho', name: newUser.name });
     
