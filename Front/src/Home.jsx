@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
-import Rutina from './components/Rutina'
+import Rutine from './components/Rutine'
 import MonthTracker from './components/MonthTracker';
-import NuevaRutina from './components/NuevaRutina';
+import NewRoutine from './components/NewRoutine';
 import Context from './Context';
 
 function Home() {
@@ -20,10 +20,10 @@ function Home() {
         <MonthTracker />
         <h3 className="font-bold">Rutinas</h3>
         <div className="flex flex-col">
-          <Rutina name={"a"} />
-          <Rutina name={"a"} />
-          <Rutina name={"a"} />
-          <NuevaRutina/>
+          <Rutine name={"a"} />
+          <Rutine name={"a"} />
+          <Rutine name={"a"} />
+          <NewRoutine/>
         </div>
       </div>
     </>
