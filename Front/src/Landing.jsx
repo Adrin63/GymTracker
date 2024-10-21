@@ -70,7 +70,7 @@ function Landing(){
                     <input
                         onInput={(e) => setPassword(e.target.value)}
                         value={password} className="shadow appearance-none border
-                    rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="text" placeholder="*****************************" />
+                    rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="*****************************" />
                 </div>
             <button className="font-bold bg-orange-400 w-1/2 text-center rounded p-2 text-white" type="submit">
                 <h1 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}>LOGIN</h1>
