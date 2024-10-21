@@ -1,12 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Context from "./Context";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { API_URL } from "./config";
 
 function Landing(){
     
+    const {setActualUser} = useContext(Context);
+    const redirect = useNavigate();
+
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+
+    const [status, setStatus] = useState("");
 
     const login = (e) => {
         
@@ -30,12 +35,22 @@ function Landing(){
 
         
         fetch(API_URL+'/login', options)
-        .then(resp => resp.json())
-        .then(data => {        
-            if (!data.error){
-            setActualUser(data.name)
-            redirect('/home')
-        }
+        .then(resp => {
+            if(resp.status == 401)
+            {
+                setStatus("Contraseña equivocada");
+                return;
+            }
+            else if(resp.status == 404)
+            {
+                setStatus("Este usuario no existe");
+                return;
+            }
+                return resp.json();
+        })
+        .then(data => {       
+                setActualUser(data.name);
+                redirect('/home');
         })
         .catch(err => console.log(err))
     }
@@ -68,6 +83,8 @@ function Landing(){
             </div>
 
                 <Link to='/register' className="text-orange-300">REGISTER</Link>
+                <h1 className="text-red-600 p-4 mt-3">{status || '\u00A0'}</h1>
+
         </div>
     )
 }
