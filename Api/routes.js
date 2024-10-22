@@ -60,8 +60,9 @@ router.post('/login', async (req, res) => {
     }
   });
 
-//RUTINES
+//MUSCULAR GROUPS
 
-router.post('/rutines', async (req, res) => await createItem(req, res, Rutines));
+router.get('/muscularGroups', async (req, res) => await readItems(req, res, MuscularGroup));
+router.post('/muscularGroups', async (req, res) => await createItem(req, res, MuscularGroup));
 
 module.exports = router;
