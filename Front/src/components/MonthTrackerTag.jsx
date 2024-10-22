@@ -1,6 +1,6 @@
 import SingleDay from "./SingleDay";
 
-function MonthTracker(){
+function MonthTrackerTag(){
     return (
         <div className="flex flex-col bg-green-300 w-full p-2 rounded-lg">
             <div className=" flex flex-row justify-between">
@@ -16,4 +16,4 @@ function MonthTracker(){
     )
 }
 
-export default MonthTracker;
+export default MonthTrackerTag;

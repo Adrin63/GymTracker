@@ -18,9 +18,28 @@ const {
 
 
 
-//GETS
+//USERS
 
 router.get('/users', async (req, res) => await readItems(req, res, Users));
+
+router.post('/register', async (req, res) => {
+    try {
+      const { name, password } = req.body;
+    
+      console.log('me llega', name, password)
+      const existingUser = await Users.findOne({ where: { name } });
+      if (existingUser) {
+        return res.status(402).json({ error: 'Nombre existe' });
+      }
+
+      const newUser = await Users.create({ name, password });
+
+      res.json({ message: 'Register hecho', name: newUser.name });
+    
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 router.post('/login', async (req, res) => {
     const { name, password } = req.body;
@@ -41,27 +60,8 @@ router.post('/login', async (req, res) => {
     }
   });
 
-//POSTS
+//RUTINES
 
-router.post('/users', async (req, res) => await createItem(req, res, Users));
-
-router.post('/register', async (req, res) => {
-    try {
-      const { name, password } = req.body;
-    
-      console.log('me llega', name, password)
-      const existingUser = await Users.findOne({ where: { name } });
-      if (existingUser) {
-        return res.status(402).json({ error: 'Nombre existe' });
-      }
-
-      const newUser = await Users.create({ name, password });
-
-      res.json({ message: 'Register hecho', name: newUser.name });
-    
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
+router.post('/rutines', async (req, res) => await createItem(req, res, Rutines));
 
 module.exports = router;
