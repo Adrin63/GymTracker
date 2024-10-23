@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
-import Rutine from './components/Rutine'
+import Rutine from './components/Rutines/Rutine.jsx'
 import MonthTrackerTag from './components/MonthTrackerTag';
-import NewRoutineTag from './components/NewRoutineTag';
+import NewRoutineTag from './components/Rutines/NewRoutineTag';
 import Context from './Context';
 
 function Home() {
