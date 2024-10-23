@@ -9,6 +9,7 @@ import Register from './Register';
 
 import App from './App';
 import NewRoutine from './NewRoutine';
+import MuscularGroupSelector from './MuscularGroupSelector';
 
 
 createRoot(document.getElementById('root')).render(
@@ -18,7 +19,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<Landing/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/NewRoutine" element={<NewRoutine/>}/>
+        <Route path="/NewRoutine" element={<NewRoutine/>}>
+          <Route path="/NewRoutine" element={<MuscularGroupSelector/>}/>
+        </Route>
       </Route>
     </Routes>  
   </BrowserRouter>
