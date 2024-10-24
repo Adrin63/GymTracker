@@ -2,7 +2,7 @@ import ColorToSelect from "./ColorToSelect";
 
 function ColorPicker({selectedColor, display, setDisplay}) {
     return (
-        <div className={`flex flex-row w-screen bg-slate-900 justify-between items-center px-2 py-4 ${display ? '' : 'hidden'}`}>
+        <div className={`flex flex-row w-screen bg-slate-900 justify-between items-center px-3 py-4 ${display ? '' : 'hidden'}`}>
             <ColorToSelect color="orange" onClick={() => { selectedColor("orange"); setDisplay(false); }} />
             <ColorToSelect color="emerald" onClick={() => { selectedColor("emerald"); setDisplay(false); }} />
             <ColorToSelect color="blue" onClick={() => { selectedColor("blue"); setDisplay(false); }} />

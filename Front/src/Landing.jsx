@@ -2,6 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import Context from "./Context";
 import { useContext, useState } from "react";
 import { API_URL } from "./config";
+import Loading from "./components/Loading";
 
 function Landing(){
     
@@ -13,8 +14,10 @@ function Landing(){
 
     const [status, setStatus] = useState("");
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const login = (e) => {
-        
+        setIsLoading(true);
         e.preventDefault();
 
         console.log('Intenta log', name," ", password);
@@ -38,11 +41,13 @@ function Landing(){
         .then(resp => {
             if(resp.status == 401)
             {
+                setIsLoading(false);
                 setStatus("Contraseña equivocada");
                 return;
             }
             else if(resp.status == 404)
             {
+                setIsLoading(false);
                 setStatus("Este usuario no existe");
                 return;
             }
@@ -81,10 +86,10 @@ function Landing(){
                 <h3 className="text-white p-3">OR</h3>
                 <hr className="w-1/3 h-0.5 my-4 bg-white border-0 rounded"/>
             </div>
-
                 <Link to='/register' className="text-orange-300">REGISTER</Link>
-                <h1 className="text-red-600 p-4 mt-3">{status || '\u00A0'}</h1>
-
+            <div className="flex items-center justify-center h-16">
+                {isLoading ? <Loading /> : <h1 className="text-red-600 p-4 mt-3">{status || '\u00A0'}</h1>}
+            </div>
         </div>
     )
 }

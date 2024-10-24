@@ -7,20 +7,19 @@ import Context from './Context';
 
 function MuscularGroupSelector(){
     
-    const {MuscularGroups, selectedMuscularGroups, handleGroupSelected} = useContext(Context);
-
-    //NAME AND COLOR
-    const [name, setName] = useState("");    
-    const [selectedColor, setSelectedColor] = useState("blue");
+    const {MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises} = useContext(Context);
+    
+    setOnExercises(false);
+    
     const [displayedColorPicker, setDisplayedColorPicker] = useState(false);
     
     const [randomInputText, setRandomInputText] = useState("");
+    const [lastIndex, setLastIndex] = useState(-1);
     const [newNameTrigger, setNewNameTrigger] = useState(false);
 
-    // Lista de 10 nombres
     const inputText = [
-        'Fuerza Total',
-        'Cuerpo en Equilibrio',
+        'Fuerza 1000%',
+        'La tigresa de Kung Fu Panda',
         'Vida Sana Corito Sano',
         'Rutina de Definición Extrema',
         'Construcción de Masa Muscular',
@@ -32,17 +31,24 @@ function MuscularGroupSelector(){
     ];
 
     useEffect(() => {
-        const aux = Math.floor(Math.random() * inputText.length);
+        let aux;
+
+        do{
+            aux = Math.floor(Math.random() * inputText.length);
+        }
+        while(aux == lastIndex)
+
+        setLastIndex(aux);
         setRandomInputText(inputText[aux]);
     }, [newNameTrigger])
 
     return (
         <>
             <div className="flex flex-col pt-2 space-y-4 items-center">
-                    <div className="flex flex-row space-x-4 justify-center items-center">
+                    <div className="flex flex-row space-x-4 w-screen px-3 justify-center items-center">
                         <input
-                            onInput={(e) => {setName(e.target.value); if(e.target.value.length == 1) newNameTrigger ? setNewNameTrigger(false) : setNewNameTrigger(true)}}
-                            value={name}
+                            onInput={(e) => {setSelectedName(e.target.value); if(e.target.value.length == 1) newNameTrigger ? setNewNameTrigger(false) : setNewNameTrigger(true)}}
+                            value={selectedName}
                             className="appearance-none border rounded w-full p-2 text-gray-700 leading-tight" id="name" type="text" placeholder={randomInputText} />
                         <div onClick={() => displayedColorPicker ? setDisplayedColorPicker(false) : setDisplayedColorPicker(true)}>
                             <ColorToSelect color={selectedColor} className="border border-3xl border-black"/>
