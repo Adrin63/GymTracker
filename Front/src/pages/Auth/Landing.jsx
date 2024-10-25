@@ -1,8 +1,8 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import Context from "./Context";
+import Context from "../../Context";
 import { useContext, useState } from "react";
-import { API_URL } from "./config";
-import Loading from "./components/Loading";
+import { API_URL } from "../../config";
+import Loading from "../../components/Loading";
 
 function Landing(){
     

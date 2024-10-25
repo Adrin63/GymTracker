@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react'
-import RutineTag from './components/Rutines/RutineTag.jsx'
-import MonthTrackerTag from './components/MonthTrackerTag';
-import NewRoutineTag from './components/Rutines/NewRoutineTag.jsx';
-import Context from './Context';
+import RutineTag from '../components/Rutines/RutineTag.jsx'
+import MonthTrackerTag from '../components/MonthTrackerTag.jsx';
+import NewRoutineTag from '../components/Home/NewRoutineTag.jsx';
+import Context from '../Context.js';
 
 function Home() {
 
@@ -19,7 +19,7 @@ function Home() {
         <h3 className="font-bold">Tu semana</h3>
         <MonthTrackerTag />
         <h3 className="font-bold">Rutinas</h3>
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center items-center">
           <RutineTag name={"a"} />
           <RutineTag name={"a"} />
           <RutineTag name={"a"} />

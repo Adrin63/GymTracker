@@ -2,15 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import Landing from './Landing';
-import Home from './Home';
+import Landing from './pages/Auth/Landing';
+import Home from './pages/Home';
 import './index.css';
-import Register from './Register';
+import Register from './pages/Auth/Register';
 
-import App from './App';
-import NewRoutine from './NewRoutine';
-import MuscularGroupSelector from './MuscularGroupSelector';
-import ExercisesRutineSelector from './ExercisesRutineSelector';
+import App from './pages/App';
+import NewRoutine from './pages/Rutines/NewRoutine';
+import MuscularGroupSelector from './pages/Rutines/MuscularGroupSelector';
+import ExercisesRutineSelector from './pages/Rutines/ExercisesRutineSelector';
 
 
 createRoot(document.getElementById('root')).render(

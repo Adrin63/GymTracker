@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Context from "./Context";
-import { API_URL } from "./config";
+import Context from "../../Context";
+import { API_URL } from "../../config";
 
 function Register(){
     
