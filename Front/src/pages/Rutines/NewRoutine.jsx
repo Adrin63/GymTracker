@@ -7,17 +7,20 @@ import Context from "../../Context";
 import { API_URL } from "../../config";
 
 function NewRoutine() {
+    
+    //NAME AND COLOR
+    const [selectedName, setSelectedName] = useState("");
+    const [selectedColor, setSelectedColor] = useState("blue");
+    
+    const [isLoading, setIsLoading] = useState(true);
+    const [onExercises, setOnExercises] = useState(false);
 
     //MUSCLES
     const [MuscularGroups, setMuscularGroups] = useState([{}]);
     const [selectedMuscularGroups, setSelectedMuscularGroups] = useState([]);
 
-    //NAME AND COLOR
-    const [selectedName, setSelectedName] = useState("");
-    const [selectedColor, setSelectedColor] = useState("blue");
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [onExercises, setOnExercises] = useState(false);
+    //EXERCISES
+    const [exercisesByGroup, setExercisesByGroup] = useState([{}]);
 
     useEffect(() => {
         fetch(API_URL + '/muscularGroups')
@@ -49,26 +52,24 @@ function NewRoutine() {
             <div className="pt-14">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :
                     <>
-                        <Context.Provider value={{ MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups }}>
+                        <Context.Provider value={{ MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups, exercisesByGroup,setExercisesByGroup }}>
                             <Outlet />
                         </Context.Provider>
 
-                        {selectedMuscularGroups.length > 0 ?
-                            <Link className="flex items-center justify-center pt-2 pb-4" to='exercises'>
-                                <>
-                                    <button className="bg-orange-300 p-3 rounded-3xl w-1/2 font-bold text-xl text-slate-700">
-                                        CREAR RUTINA
-                                    </button>
-                                </>
-                            </Link>
-                            :
-                            <div className="flex items-center justify-center pt-2 pb-4">
-                                <button className="bg-slate-500 p-3 rounded-3xl w-1/2 font-bold text-xl text-slate-400">
+                        <div className="flex items-center justify-center pt-2 pb-4">
+                            <Link to={selectedMuscularGroups.length > 0 ? 'exercises' : '#'}>
+                                <button
+                                    className={`p-3 rounded-3xl w-full font-bold text-xl ${selectedMuscularGroups.length > 0
+                                            ? 'bg-orange-300 text-slate-700'
+                                            : 'bg-slate-500 text-slate-400 cursor-not-allowed'
+                                        }`}
+                                    disabled={selectedMuscularGroups.length == 0}
+                                >
                                     CREAR RUTINA
                                 </button>
-                            </div>
+                            </Link>
+                        </div>
 
-                        }
                     </>
                 }
             </div>

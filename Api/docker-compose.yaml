@@ -4,6 +4,4 @@ services:
     container_name: node-application
     ports:
       - "9000:3006"
-    volumes:
-    - ./:/usr/src/app
     restart: always

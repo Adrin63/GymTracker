@@ -2,10 +2,10 @@ const Sequelize = require('sequelize');
 const bcrypt = require('bcrypt');
 
 const sequelize = new Sequelize('gymtracker', 'root', 'root', {
-    //host: 'localhost',
-    host: 'localhost', //IP bbdd
+    host: 'localhost',
+    // host: 'host.docker.internal', //IP bbdd
     port: 3306,
-    dialect: 'mysql' // conecta a mysql
+    dialect: 'mysql'
 });
 
 // Runear 1 vez, convierte las tablas del Sequelize a MySql

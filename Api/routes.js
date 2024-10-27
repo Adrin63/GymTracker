@@ -1,8 +1,8 @@
-const express = require('express'); // Importa la llibreria Express per gestionar les rutes
+const express = require('express');
 const router = express.Router();
 
 const bcrypt = require('bcrypt');
-//const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken'); 
 
 const SECRET_KEY = "sin-animo-de-lucro-tu-que-prefieres-un-pincho-o-una-tortilla-de-patatas";
 
@@ -34,6 +34,9 @@ router.post('/register', async (req, res) => {
 
       const newUser = await Users.create({ name, password });
 
+      const token = jwt.sign({ name: name }, SECRET_KEY, { expiresIn: '2h' }); 
+      res.cookie('token', token, { httpOnly: false, maxAge: 7200000 }); 
+  
       res.json({ message: 'Register hecho', name: newUser.name });
     
     } catch (error) {
@@ -64,5 +67,9 @@ router.post('/login', async (req, res) => {
 
 router.get('/muscularGroups', async (req, res) => await readItems(req, res, MuscularGroup));
 router.post('/muscularGroups', async (req, res) => await createItem(req, res, MuscularGroup));
+
+//Rutines
+router.get('/rutines', async (req, res) => await readItems(req, res, Rutines));
+
 
 module.exports = router;
