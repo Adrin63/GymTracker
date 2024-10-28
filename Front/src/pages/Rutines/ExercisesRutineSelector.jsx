@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import Context from '../../Context';
 import NewExerciseTag from '../../components/Exercises/NewExerciseTag';
+import ExerciseInputTag from '../../components/Exercises/ExerciseInputTag';
 
 function ExercisesRutineSelector() {
 
@@ -37,34 +38,45 @@ function ExercisesRutineSelector() {
         setExercisesByGroup(newExercises);
     }
 
-    useEffect(() => console.log(exercisesByGroup), [exercisesByGroup])
+    // useEffect(() => console.log(exercisesByGroup), [exercisesByGroup])
 
-    const changeBetweenLbsAndKg = (exercice, state) => {
-        console.log(exercice)
-    }
+    const handleNameChange = (muscleGroupToUpdate, index, newName) => {
+        const updatedExercises = exercisesByGroup.map((group) =>
+            group.name === muscleGroupToUpdate
+                ? {
+                    ...group,
+                    exercises: group.exercises.map((ex, idx) => (idx === index ? { ...ex, name: newName } : ex)),
+                }
+                : group
+        );
+        setExercisesByGroup(updatedExercises);
+    };
+
+    const handleInfoChange = (muscleGroupToUpdate, index, newInfo) => {
+        const updatedExercises = exercisesByGroup.map((group) =>
+            group.name === muscleGroupToUpdate
+                ? {
+                    ...group,
+                    exercises: group.exercises.map((ex, idx) => (idx === index ? { ...ex, info: newInfo } : ex)),
+                }
+                : group
+        );
+        setExercisesByGroup(updatedExercises);
+    };
 
     return (
         <div className='flex flex-col'>
             {selectedMuscularGroups.map((muscularGroup, index) => (
                 <div className='flex flex-col p-3 space-y-4'>
                     <h1 key={index} className='text-white font-bold text-2xl uppercase'>{muscularGroup}</h1>
-
                     {
-                        exercisesByGroup.map((exercise, index) => (
-                        exercise.name == muscularGroup ? 
-                        <div key={index} className='flex flex-row space-x-2'>
-                            <input
-                                //onInput={(e) => { if(e.target.value.length < 38) }}
-                                value={""}
-                                className="appearance-none border rounded w-full p-3 text-gray-700 leading-tight" id="name" type="text" placeholder={"Ejercicio 1"} />
-                            <input
-                                //onInput={(e) => { if(e.target.value.length < 38) }}
-                                value={""}
-                                className="appearance-none border rounded w-1/6 p-3 text-gray-700 leading-tight text-center" id="name" type="text" placeholder={"10"} />
-                            <button className='flex justify-center items-center p-3 uppercase bg-orange-300 text-slate-500 font-bold rounded' onClick={() => changeBetweenLbsAndKg('20')}>
-                                kg
-                            </button>
-                        </div> : ''
+                        exercisesByGroup.map((group) => (
+                        group.name == muscularGroup ? 
+                        group.exercises.map((ex, index) => (
+                        <ExerciseInputTag key={index} name={ex.name} info={ex.info}
+                            onNameChange={(newName) => handleNameChange(muscularGroup, index, newName)}
+                            onInfoChange={(newInfo) => handleInfoChange(muscularGroup, index, newInfo)}
+                        />)) : ''
                         ))
                     }
                     <button className='flex justify-center items-center' onClick={() => {addExercise(muscularGroup)}}>

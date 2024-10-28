@@ -10,6 +10,7 @@ function Register(){
 
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const [status, setStatus] = useState("");
 
@@ -20,8 +21,14 @@ function Register(){
             setStatus("Falta el nombre");
             return;
         }
+
         if (password.trim() === "") {
             setStatus("Falta la contraseña");
+            return;
+        }
+
+        if (password != confirmPassword) {
+            setStatus("Las dos contraseñas no coinciden");
             return;
         }
 
@@ -77,7 +84,13 @@ function Register(){
                         <input
                             onInput={(e) => setPassword(e.target.value)}
                             value={password} className="shadow appearance-none border
-                            rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="text" placeholder="*****************************" />
+                            rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" type="text" placeholder="Contraseña" />
+                    </div>
+                    <div>
+                        <input
+                            onInput={(e) => setConfirmPassword(e.target.value)}
+                            value={confirmPassword} className="shadow appearance-none border
+                            rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="text" placeholder="Confirmar Contraseña" />
                     </div>
                     <div>
                         <button className="font-bold bg-orange-400 rounded w-1/2 p-2 text-white" type="submit">
