@@ -64,10 +64,10 @@ function MuscularGroupSelector(){
                 <div className="flex flex-col items-center space-y-4">
                     <div className="flex flex-wrap items-center justify-between">
                         {
-                            MuscularGroups?.map((a, index) => (
-                                <div className="w-1/2 p-3 flex" key={index} onClick={() => handleGroupSelected(a)}>
-                                    <MuscularGroupTag name={a.name} img={a.image}
-                                    isSelected={selectedMuscularGroups.includes(a.name)}/>
+                            MuscularGroups?.map((muscles, index) => (
+                                <div className="w-1/2 p-3 flex" key={index} onClick={() => handleGroupSelected(muscles)}>
+                                    <MuscularGroupTag name={muscles.name} img={muscles.image}
+                                    isSelected={selectedMuscularGroups.includes(muscles.name)}/>
                                 </div>
                             ))
                         }
