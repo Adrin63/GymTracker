@@ -8,19 +8,6 @@ const sequelize = new Sequelize('gymtracker', 'root', 'root', {
     dialect: 'mysql'
 });
 
-// Runear 1 vez, convierte las tablas del Sequelize a MySql
-// async function iniDB(){
-// await sequelize.sync({force: true});
-// console.log('tablas creadas');
-// }
-
-// iniDB();
-
-
-//DEFINIR TABLAS
-//DEFINIR TABLAS
-//DEFINIR TABLAS
-
 const AsistedDays = sequelize.define('asistedDays', {
     date: {
         type: Sequelize.STRING,
@@ -73,6 +60,21 @@ const Exercises = sequelize.define('exercises', {
     info: {
         type: Sequelize.FLOAT,
         allowNull: true,
+    },
+    unit: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    }
+});
+
+const Records = sequelize.define('records', {
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    time: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 });
 
@@ -92,16 +94,30 @@ MuscularGroup.belongsToMany(Rutines, {through: 'rutines_has_musculargroup'});
 MuscularGroup.hasMany(Exercises);
 Exercises.belongsTo(MuscularGroup);
 
+Records.belongsTo(Rutines);
+Rutines.hasMany(Records)
+
+Records.belongsTo(Users);
+Users.hasMany(Records);
+
+Records.belongsToMany(Exercises, {through: 'records_has_exercises'});
+Exercises.belongsToMany(Records, {through: 'records_has_exercises'});
+
+Records.belongsTo(AsistedDays);
+AsistedDays.belongsTo(Records);
+
 Users.beforeCreate(async (user) => {
-    const hashedPassword = await bcrypt.hash(user.password, 10); // Encripta la contrasenya amb bcrypt
+    const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
   });
   
 
 module.exports = {
+sequelize,
 AsistedDays,
 Users,
 Rutines,
 MuscularGroup,
-Exercises
+Exercises,
+Records
 };
