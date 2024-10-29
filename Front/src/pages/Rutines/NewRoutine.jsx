@@ -5,6 +5,7 @@ import Loading from "../../components/Loading";
 import Context from "../../Context";
 
 import { API_URL } from "../../config";
+import Header from "../../components/Header";
 
 function NewRoutine() {
     
@@ -39,15 +40,8 @@ function NewRoutine() {
 
     return (
         <div className="bg-slate-700">
-            <div className="flex flex-row justify-between items-center w-screen px-4 py-2 fixed bg-slate-700 border-b-2 border-slate-400">
-                <Link to={onExercises ? `/newRoutine/muscles` : `/home`}>
-                    <button className=" rounded-full flex items-center justify-center w-[35px] h-[35px] text-xl">
-                        <img src='/back.svg' />
-                    </button>
-                </Link>
-                <h2 className="text-white font-bold text-center text-xl flex-grow uppercase">{onExercises ? selectedName : "Nueva Rutina"}</h2>
-                <div className="w-[44px]"></div>
-            </div>
+            
+            <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/newRoutine/muscles` : `/home`}/>
 
             <div className="pt-14">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :

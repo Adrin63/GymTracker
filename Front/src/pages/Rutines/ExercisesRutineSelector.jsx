@@ -9,13 +9,10 @@ function ExercisesRutineSelector() {
 
 
     useEffect(() => {
-        setSelectedName("placeholder")
-        //setSelectedMuscularGroups(['Triceps', 'Biceps', 'Pecho']);
-
+        setSelectedName("placeholder")//ELIMINAR
         setOnExercises(true);
 
-        const aux = selectedMuscularGroups.map((musc) => ({ name: musc, exercises: [{ name: '', info: ''}] }));
-
+        const aux = selectedMuscularGroups.map((musc) => ({ name: musc, exercises: [{ name: '', info: '', unit: 'kg' }] }));
         setExercisesByGroup(aux)
 
         // if(selectedName == '')
@@ -28,12 +25,12 @@ function ExercisesRutineSelector() {
     const addExercise = (muscleGroupToChange) => {
 
         const newExercises = exercisesByGroup.map((exercise) => (
-                exercise.name === muscleGroupToChange ? 
+            exercise.name === muscleGroupToChange ?
                 {
                     ...exercise,
-                    exercises: [...exercise.exercises, { name: '', info: ''}] 
+                    exercises: [...exercise.exercises, { name: '', info: '', unit: 'kg' }]
                 } : exercise
-            ))    
+        ))
 
         setExercisesByGroup(newExercises);
     }
@@ -71,17 +68,19 @@ function ExercisesRutineSelector() {
                     <h1 key={index} className='text-white font-bold text-2xl uppercase'>{muscularGroup}</h1>
                     {
                         exercisesByGroup.map((group) => (
-                        group.name == muscularGroup ? 
-                        group.exercises.map((ex, index) => (
-                        <ExerciseInputTag key={index} name={ex.name} info={ex.info}
-                            onNameChange={(newName) => handleNameChange(muscularGroup, index, newName)}
-                            onInfoChange={(newInfo) => handleInfoChange(muscularGroup, index, newInfo)}
-                        />)) : ''
+                            group.name == muscularGroup ?
+                                group.exercises.map((ex, index) => (
+                                    <ExerciseInputTag key={index} name={ex.name} info={ex.info} unit={ex.unit}
+                                        onNameChange={(newName) => handleNameChange(muscularGroup, index, newName)}
+                                        onInfoChange={(newInfo) => handleInfoChange(muscularGroup, index, newInfo)}
+                                    />)) : ''
                         ))
                     }
-                    <button className='flex justify-center items-center' onClick={() => {addExercise(muscularGroup)}}>
-                        <NewExerciseTag/>
-                    </button>
+                    <div className='flex justify-center items-center'>
+                        <button onClick={() => { addExercise(muscularGroup) }}>
+                            <NewExerciseTag />
+                        </button>
+                    </div>
                 </div>
             ))}
         </div>
