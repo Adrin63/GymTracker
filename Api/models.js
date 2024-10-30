@@ -26,7 +26,7 @@ const Users = sequelize.define('users', {
     }
 });
 
-const Rutines = sequelize.define('rutines', {
+const Routines = sequelize.define('routines', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -82,20 +82,20 @@ const Records = sequelize.define('records', {
 AsistedDays.belongsToMany(Users, {through: 'asistedDays_has_users'});
 Users.belongsToMany(AsistedDays, {through: 'asistedDays_has_users'});
 
-Users.hasMany(Rutines);
-Rutines.belongsTo(Users);
+Users.hasMany(Routines);
+Routines.belongsTo(Users);
 
-AsistedDays.belongsTo(Rutines);
-Rutines.hasMany(AsistedDays);
+AsistedDays.belongsTo(Routines);
+Routines.hasMany(AsistedDays);
 
-Rutines.belongsToMany(MuscularGroup, {through: 'rutines_has_musculargroup'});
-MuscularGroup.belongsToMany(Rutines, {through: 'rutines_has_musculargroup'});
+Routines.belongsToMany(MuscularGroup, {through: 'rutines_has_musculargroup'});
+MuscularGroup.belongsToMany(Routines, {through: 'rutines_has_musculargroup'});
 
 MuscularGroup.hasMany(Exercises);
 Exercises.belongsTo(MuscularGroup);
 
-Records.belongsTo(Rutines);
-Rutines.hasMany(Records)
+Records.belongsTo(Routines);
+Routines.hasMany(Records)
 
 Records.belongsTo(Users);
 Users.hasMany(Records);
@@ -116,7 +116,7 @@ module.exports = {
 sequelize,
 AsistedDays,
 Users,
-Rutines,
+Routines,
 MuscularGroup,
 Exercises,
 Records

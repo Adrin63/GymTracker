@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const SECRET_KEY = "sin-animo-de-lucro-tu-que-prefieres-un-pincho-o-una-tortilla-de-patatas";
 
-const { AsistedDays, Users, Rutines, MuscularGroup, Exercises } = require('./models');
+const { AsistedDays, Users, Routines, MuscularGroup, Exercises } = require('./models');
 
 const {
     createItem,
@@ -68,8 +68,9 @@ router.post('/login', async (req, res) => {
 router.get('/muscularGroups', async (req, res) => await readItems(req, res, MuscularGroup));
 router.post('/muscularGroups', async (req, res) => await createItem(req, res, MuscularGroup));
 
-//Rutines
-router.get('/rutines', async (req, res) => await readItems(req, res, Rutines));
+//Routines
+router.get('/routines', async (req, res) => await readItems(req, res, Routines));
+router.post('/routines', async (req, res) => await createItem(req, res, Routines));
 
 
 module.exports = router;

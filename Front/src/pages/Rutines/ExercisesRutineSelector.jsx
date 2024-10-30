@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import Context from '../../Context';
-import NewExerciseTag from '../../components/Exercises/NewExerciseTag';
+import AddButton from '../../components/AddButton';
 import ExerciseInputTag from '../../components/Exercises/ExerciseInputTag';
 
 function ExercisesRutineSelector() {
@@ -76,11 +76,7 @@ function ExercisesRutineSelector() {
                                     />)) : ''
                         ))
                     }
-                    <div className='flex justify-center items-center'>
-                        <button onClick={() => { addExercise(muscularGroup) }}>
-                            <NewExerciseTag />
-                        </button>
-                    </div>
+                    <AddButton functionToDo={() => addExercise(muscularGroup)}/>
                 </div>
             ))}
         </div>
