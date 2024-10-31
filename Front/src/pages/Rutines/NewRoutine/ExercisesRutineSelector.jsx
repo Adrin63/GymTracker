@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import Context from '../../Context';
-import AddButton from '../../components/AddButton';
-import ExerciseInputTag from '../../components/Exercises/ExerciseInputTag';
+import Context from '../../../Context';
+import AddButton from '../../../components/AddButton';
+import ExerciseInputTag from '../../../components/Exercises/ExerciseInputTag';
 
 function ExercisesRutineSelector() {
 

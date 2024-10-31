@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-import Loading from "../../components/Loading";
-import Context from "../../Context";
+import Loading from "../../../components/Loading";
+import Context from "../../../Context";
 
-import { API_URL } from "../../config";
-import Header from "../../components/Header";
+import { API_URL } from "../../../config";
+import Header from "../../../components/Header";
 
 function NewRoutine() {
 
@@ -14,7 +14,7 @@ function NewRoutine() {
     const [selectedColor, setSelectedColor] = useState("blue");
 
     const [allRutineNames, setAllRutineNames] = useState([""]);
-    const [doesRoutineExist, setDoesRutineExist] = useState(false);
+    const [doesRoutineExist, setDoesRoutineExist] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [onExercises, setOnExercises] = useState(false);
@@ -28,6 +28,7 @@ function NewRoutine() {
     const [exercisesByGroup, setExercisesByGroup] = useState([{}]);
 
     useEffect(() => {
+                
         fetch(API_URL + '/muscularGroups')
             .then(resp => resp.json())
             .then(data => { setMuscularGroups(data); setIsLoading(false); })
@@ -42,7 +43,7 @@ function NewRoutine() {
     useEffect(() => {
         const matchedRoutines = allRutineNames?.filter((rutine) => rutine.toUpperCase() == selectedName.toUpperCase());
 
-        matchedRoutines.length > 0 ? setDoesRutineExist(true) : setDoesRutineExist(false)
+        matchedRoutines.length > 0 ? setDoesRoutineExist(true) : setDoesRoutineExist(false)
     }, [selectedName])
 
     const handleGroupSelected = (muscle) => {
@@ -94,7 +95,7 @@ function NewRoutine() {
     return (
         <div className="bg-slate-700">
 
-            <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/newRoutine/muscles` : `/home`} />
+            <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/CreateRoutine/muscles` : `/home`} />
 
             <div className="pt-14">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :

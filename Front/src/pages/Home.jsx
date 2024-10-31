@@ -4,6 +4,7 @@ import MonthTrackerTag from '../components/MonthTrackerTag.jsx';
 import Context from '../Context.js';
 import { Link, useNavigate } from 'react-router-dom';
 import AddButton from '../components/AddButton.jsx';
+import { API_URL } from '../config.js';
 
 function Home() {
 
@@ -12,6 +13,14 @@ function Home() {
 
   const redirect = useNavigate();
 
+
+  useEffect(() => {
+    fetch(API_URL + '/routines')
+    .then(resp => resp.json())
+    .then(data => setRutines(data))
+    .catch(err => console.log(err));
+}, [])
+  
   return (
     <>
       <div className="flex flex-col p-4 bg-slate-700 h-screen w-full space-y-4">
@@ -32,7 +41,13 @@ function Home() {
           <RutineTag name={"Espalda"} color={"yellow"}/>
           <RutineTag name={"Croissant"} color={"emerald"}/>
           
-          <AddButton functionToDo={() => redirect("/newRoutine/muscles")}/>
+          {rutines?.map((rutine, index) => (
+            <Link to='' className='w-full'>
+              <RutineTag name={rutine.name} color={rutine.color}/>
+            </Link>
+            ))}
+
+          <AddButton functionToDo={() => redirect("/CreateRoutine/muscles")}/>
         </div>
       </div>
     </>

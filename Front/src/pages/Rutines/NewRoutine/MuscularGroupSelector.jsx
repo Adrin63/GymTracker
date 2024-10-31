@@ -1,9 +1,9 @@
-import MuscularGroupTag from '../../components/Rutines/MuscularGroupTag'
-import ColorPicker from "../../components/Colors/ColorPicker";
-import ColorToSelect from "../../components/Colors/ColorToSelect";
+import MuscularGroupTag from '../../../components/Rutines/MuscularGroupTag'
+import ColorPicker from "../../../components/Colors/ColorPicker";
+import ColorToSelect from "../../../components/Colors/ColorToSelect";
 
 import { useContext, useEffect, useState } from 'react';
-import Context from '../../Context';
+import Context from '../../../Context';
 
 function MuscularGroupSelector() {
 
@@ -50,7 +50,7 @@ function MuscularGroupSelector() {
         <>
             <div className='flex flex-row justify-between px-3 pt-2 items-center'>
                 <h1 className='text-white font-bold text-lg uppercase'>Nombre y color</h1>
-                <h1 className="text-red-400">{doesRoutineExist ? "Esta rutina ya existe" : ''}</h1>
+                <h1 className="text-red-400">{doesRoutineExist ? 'Esta rutina ya existe' : ' '}</h1>
                 
             </div>
             <div className="flex flex-col py-2 items-center">
