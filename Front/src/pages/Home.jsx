@@ -22,8 +22,7 @@ function Home() {
 }, [])
   
   return (
-    <>
-      <div className="flex flex-col p-4 bg-slate-700 h-screen w-full space-y-4">
+      <div className="flex flex-col p-4 bg-slate-700 w-full space-y-4">
         <div>
           <h1 className='text-white font-bold text-2xl uppercase'>Hola,</h1>
           <h1 className="text-orange-300 font-bold text-2xl uppercase">{actualUser || "natt"}</h1>
@@ -50,7 +49,6 @@ function Home() {
           <AddButton functionToDo={() => redirect("/CreateRoutine/muscles")}/>
         </div>
       </div>
-    </>
   )
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import Loading from "../../../components/Loading";
 import Context from "../../../Context";
@@ -9,26 +9,27 @@ import Header from "../../../components/Header";
 
 function NewRoutine() {
 
+    const redirect = useNavigate();
+
     //NAME AND COLOR
     const [selectedName, setSelectedName] = useState("");
     const [selectedColor, setSelectedColor] = useState("blue");
 
-    const [allRutineNames, setAllRutineNames] = useState([""]);
+    const [allRutineNames, setAllRutineNames] = useState([]);
     const [doesRoutineExist, setDoesRoutineExist] = useState(false);
 
     const [isLoading, setIsLoading] = useState(true);
     const [onExercises, setOnExercises] = useState(false);
-
 
     //MUSCLES
     const [MuscularGroups, setMuscularGroups] = useState([{}]);
     const [selectedMuscularGroups, setSelectedMuscularGroups] = useState([]);
 
     //EXERCISES
-    const [exercisesByGroup, setExercisesByGroup] = useState([{}]);
+    const [selectedExercises, setSelectedExercises] = useState([{}]);
 
     useEffect(() => {
-                
+
         fetch(API_URL + '/muscularGroups')
             .then(resp => resp.json())
             .then(data => { setMuscularGroups(data); setIsLoading(false); })
@@ -36,7 +37,7 @@ function NewRoutine() {
 
         fetch(API_URL + '/routines')
             .then(resp => resp.json())
-            .then(data => { const aux = data?.map((routine) => routine.name); setAllRutineNames(aux)})
+            .then(data => { const aux = data?.map((routine) => routine.name); setAllRutineNames(aux) })
             .catch(err => console.log(err));
     }, [])
 
@@ -45,6 +46,32 @@ function NewRoutine() {
 
         matchedRoutines.length > 0 ? setDoesRoutineExist(true) : setDoesRoutineExist(false)
     }, [selectedName])
+
+    const onButtonPressed = () => {
+
+        if (canBePressedTheButton()) {
+            if (onExercises) {
+                createRoutine();
+            }
+            else {
+                redirect('exercises')
+            }
+        }
+    }
+
+    const canBePressedTheButton = () => {
+        let aux = false;
+
+        if (onExercises) {
+            //recorrer ejercicios que todos tengan nombre
+            aux = true;
+        }
+        else {
+            aux = (selectedMuscularGroups.length > 0 && !doesRoutineExist && selectedName != '')
+        }
+
+        return aux;
+    }
 
     const handleGroupSelected = (muscle) => {
         if (selectedMuscularGroups.includes(muscle.name)) {
@@ -57,24 +84,11 @@ function NewRoutine() {
     const createRoutine = () => {
 
         const values = {
-            name: selectedName || 'Croissant', // Use selectedName or fallback to a default
-            color: selectedColor,                        // Use selectedColor
-            image: 'http://example.com/image.jpg',      // Optional image URL
-            userId: 1,                                  // Replace with actual user ID if available
+            name: selectedName,
+            color: selectedColor,
             muscularGroups: selectedMuscularGroups.map(muscle => ({
                 name: muscle,
-                exercises: [
-                    {
-                        name: 'Squat',
-                        info: 80,
-                        unit: 'kg'
-                    },
-                    {
-                        name: 'Lunges',
-                        info: 40,
-                        unit: 'kg'
-                    }
-                ]
+                exercises: selectedExercises
             }))
         };
 
@@ -89,6 +103,10 @@ function NewRoutine() {
 
         fetch(API_URL + '/routines', options)
             .then(resp => resp.json())
+            .then(data => {
+                redirect('/home');
+            })
+            .catch(err => console.log(err))
     }
 
 
@@ -100,24 +118,19 @@ function NewRoutine() {
             <div className="pt-14">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :
                     <>
-                        <Context.Provider value={{ MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups, exercisesByGroup, setExercisesByGroup, doesRoutineExist }}>
+                        <Context.Provider value={{ MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups, selectedExercises, setSelectedExercises, doesRoutineExist }}>
                             <Outlet />
                         </Context.Provider>
 
                         <div className="flex items-center justify-center pt-2 pb-4">
-                            <Link to={selectedMuscularGroups.length > 0 && !doesRoutineExist ? 'exercises' : '#'}>
-                                <button
-                                    className={`p-3 rounded-3xl w-full font-bold text-xl ${selectedMuscularGroups.length > 0 && !doesRoutineExist
-                                        ? 'bg-orange-300 text-slate-700'
-                                        : 'bg-slate-500 text-slate-400 cursor-not-allowed'
-                                        }`}
-                                    disabled={selectedMuscularGroups.length == 0}
-                                >
-                                    CREAR RUTINA
-                                </button>
-                            </Link>
+                            <button
+                                className={`p-3 rounded-3xl w-1/2 font-bold text-xl ${canBePressedTheButton() ? 'bg-orange-300 text-slate-700'
+                                    : 'bg-slate-500 text-slate-400 cursor-not-allowed'
+                                    }`}
+                                onClick={() => onButtonPressed()}>
+                                CREAR RUTINA
+                            </button>
                         </div>
-
                     </>
                 }
             </div>

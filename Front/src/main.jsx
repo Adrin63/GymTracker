@@ -10,7 +10,7 @@ import Register from './pages/Auth/Register';
 import App from './pages/App';
 import CreateRoutine from './pages/Rutines/NewRoutine/CreateRoutine';
 import MuscularGroupSelector from './pages/Rutines/NewRoutine/MuscularGroupSelector';
-import ExercisesRutineSelector from './pages/Rutines/NewRoutine/ExercisesRutineSelector';
+import ExercisesSelector from './pages/Rutines/NewRoutine/ExercisesSelector';
 
 
 createRoot(document.getElementById('root')).render(
@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<Register/>}/>
         <Route path="/createRoutine" element={<CreateRoutine/>}>
           <Route path="muscles" element={<MuscularGroupSelector/>}/>
-          <Route path="exercises" element={<ExercisesRutineSelector/>}/>
+          <Route path="exercises" element={<ExercisesSelector/>}/>
         </Route>
       </Route>
     </Routes>  

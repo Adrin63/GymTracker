@@ -3,17 +3,17 @@ import Context from '../../../Context';
 import AddButton from '../../../components/AddButton';
 import ExerciseInputTag from '../../../components/Exercises/ExerciseInputTag';
 
-function ExercisesRutineSelector() {
+function ExercisesSelector() {
 
-    const { selectedMuscularGroups, selectedName, setSelectedName, selectedColor, setOnExercises, setSelectedMuscularGroups, exercisesByGroup, setExercisesByGroup } = useContext(Context);
+    const { selectedMuscularGroups, selectedName, setSelectedName, selectedColor, setOnExercises, setSelectedMuscularGroups, selectedExercises, setSelectedExercises } = useContext(Context);
 
 
     useEffect(() => {
-        setSelectedName("placeholder")//ELIMINAR
+        //setSelectedName("placeholder")//ELIMINAR
         setOnExercises(true);
 
         const aux = selectedMuscularGroups.map((musc) => ({ name: musc, exercises: [{ name: '', info: '', unit: 'kg' }] }));
-        setExercisesByGroup(aux)
+        setSelectedExercises(aux)
 
         // if(selectedName == '')
         // {
@@ -24,7 +24,7 @@ function ExercisesRutineSelector() {
 
     const addExercise = (muscleGroupToChange) => {
 
-        const newExercises = exercisesByGroup.map((exercise) => (
+        const newExercises = selectedExercises.map((exercise) => (
             exercise.name === muscleGroupToChange ?
                 {
                     ...exercise,
@@ -32,13 +32,15 @@ function ExercisesRutineSelector() {
                 } : exercise
         ))
 
-        setExercisesByGroup(newExercises);
+        setSelectedExercises(newExercises);
     }
+
+    useEffect(() => {console.log(selectedExercises)}, [selectedExercises])
 
     // useEffect(() => console.log(exercisesByGroup), [exercisesByGroup])
 
     const handleNameChange = (muscleGroupToUpdate, index, newName) => {
-        const updatedExercises = exercisesByGroup.map((group) =>
+        const updatedExercises = selectedExercises.map((group) =>
             group.name === muscleGroupToUpdate
                 ? {
                     ...group,
@@ -46,11 +48,11 @@ function ExercisesRutineSelector() {
                 }
                 : group
         );
-        setExercisesByGroup(updatedExercises);
+        setSelectedExercises(updatedExercises);
     };
 
     const handleInfoChange = (muscleGroupToUpdate, index, newInfo) => {
-        const updatedExercises = exercisesByGroup.map((group) =>
+        const updatedExercises = selectedExercises.map((group) =>
             group.name === muscleGroupToUpdate
                 ? {
                     ...group,
@@ -58,7 +60,7 @@ function ExercisesRutineSelector() {
                 }
                 : group
         );
-        setExercisesByGroup(updatedExercises);
+        setSelectedExercises(updatedExercises);
     };
 
     return (
@@ -67,7 +69,7 @@ function ExercisesRutineSelector() {
                 <div className='flex flex-col p-3 space-y-4'>
                     <h1 key={index} className='text-white font-bold text-2xl uppercase'>{muscularGroup}</h1>
                     {
-                        exercisesByGroup.map((group) => (
+                        selectedExercises.map((group) => (
                             group.name == muscularGroup ?
                                 group.exercises.map((ex, index) => (
                                     <ExerciseInputTag key={index} name={ex.name} info={ex.info} unit={ex.unit}
@@ -83,4 +85,4 @@ function ExercisesRutineSelector() {
     )
 }
 
-export default ExercisesRutineSelector;
+export default ExercisesSelector;

@@ -53,7 +53,7 @@ function MuscularGroupSelector() {
                 <h1 className="text-red-400">{doesRoutineExist ? 'Esta rutina ya existe' : ' '}</h1>
                 
             </div>
-            <div className="flex flex-col py-2 items-center">
+            <div className="flex flex-col py-2 space-y-5 items-center">
                 <div className="flex flex-row space-x-4 w-screen px-3 justify-center items-center">
                     <input
                         onInput={(e) => { if (e.target.value.length < 38) setSelectedName(e.target.value); if (e.target.value.length == 1) newNameTrigger ? setNewNameTrigger(false) : setNewNameTrigger(true) }}
