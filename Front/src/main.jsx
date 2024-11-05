@@ -8,9 +8,10 @@ import './index.css';
 import Register from './pages/Auth/Register';
 
 import App from './pages/App';
-import CreateRoutine from './pages/Rutines/NewRoutine/CreateRoutine';
-import MuscularGroupSelector from './pages/Rutines/NewRoutine/MuscularGroupSelector';
-import ExercisesSelector from './pages/Rutines/NewRoutine/ExercisesSelector';
+import CreateRoutine from './pages/Routines/NewRoutine/CreateRoutine';
+import MuscularGroupSelector from './pages/Routines/NewRoutine/MuscularGroupSelector';
+import ExercisesSelector from './pages/Routines/NewRoutine/ExercisesSelector';
+import Routine from './pages/Routines/Routine';
 
 
 createRoot(document.getElementById('root')).render(
@@ -19,7 +20,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/" element={<App/>}>
         <Route path="" element={<Landing/>}/>
         <Route path="/home" element={<Home/>}/>
-        <Route path="/:id" element={<Home/>}/>
+        <Route path="/home/:routineName" element={<Routine/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/createRoutine" element={<CreateRoutine/>}>
           <Route path="muscles" element={<MuscularGroupSelector/>}/>

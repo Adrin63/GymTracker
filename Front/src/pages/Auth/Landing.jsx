@@ -54,7 +54,7 @@ function Landing(){
                 return resp.json();
         })
         .then(data => {       
-                setActualUser(data.name);
+                setActualUser(data.userId);
                 redirect('/home');
         })
         .catch(err => console.log(err))

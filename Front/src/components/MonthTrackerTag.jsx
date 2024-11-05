@@ -1,19 +1,16 @@
-import SingleDay from "./SingleDay";
+function MonthTrackerTag({days = [1, 2, 3, 4, 5, 6, 7]}) {
+    const weekDays = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
-function MonthTrackerTag(){
     return (
-        <div className="flex flex-col bg-green-300 w-full p-2 rounded-lg">
-            <div className=" flex flex-row justify-between">
-                    <SingleDay status='0' day="1"/>
-                    <SingleDay status='1' day="2"/>
-                    <SingleDay status='2' day="3"/>
-                    <SingleDay status='2' day="4"/>
-                    <SingleDay status='3' day="5"/>
-                    <SingleDay status='0' day="6"/>
-                    <SingleDay status='1' day="7"/>
-            </div>
+        <div className="flex flex-row bg-slate-300 w-full p-2 justify-between rounded-lg">
+            {weekDays.map((dayName, index) => (
+                <div key={index} className="flex flex-col items-center w-full text-slate-500">
+                    <h2 className="font-bold">{dayName}</h2>
+                    <h2 className="text-slate-500">{days[index]}</h2>
+                </div>
+            ))}
         </div>
-    )
+    );
 }
 
 export default MonthTrackerTag;

@@ -1,4 +1,4 @@
-import MuscularGroupTag from '../../../components/Rutines/MuscularGroupTag'
+import MuscularGroupTag from '../../../components/Routines/MuscularGroupTag'
 import ColorPicker from "../../../components/Colors/ColorPicker";
 import ColorToSelect from "../../../components/Colors/ColorToSelect";
 
@@ -7,7 +7,7 @@ import Context from '../../../Context';
 
 function MuscularGroupSelector() {
 
-    const { MuscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, doesRoutineExist } = useContext(Context);
+    const { muscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, doesRoutineExist } = useContext(Context);
 
 
     const [displayedColorPicker, setDisplayedColorPicker] = useState(false);
@@ -69,7 +69,7 @@ function MuscularGroupSelector() {
             <div className="flex flex-col items-center space-y-4">
                 <div className="flex flex-wrap items-center justify-between">
                     {
-                        MuscularGroups?.map((muscles, index) => (
+                        muscularGroups?.map((muscles, index) => (
                             <div className="w-1/2 p-3 flex" key={index} onClick={() => handleGroupSelected(muscles)}>
                                 <MuscularGroupTag name={muscles.name} img={muscles.image}
                                     isSelected={selectedMuscularGroups.includes(muscles.name)} />
