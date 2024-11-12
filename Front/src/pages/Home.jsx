@@ -9,10 +9,26 @@ import { API_URL } from '../config.js';
 function Home() {
 
   const { actualUser } = useContext(Context);
+  
+  const [username, setUsername] = useState("");
   const [routines, setRoutines] = useState([]);
 
   const redirect = useNavigate();
 
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    }
+
+    fetch(API_URL + '/actualUser', options)
+    .then(resp => resp.json())
+    .then(data => setUsername(data.name))
+    .catch(err => console.log(err));
+  })
 
   useEffect(() => {
 
@@ -22,7 +38,6 @@ function Home() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({userId: 1})//CAMBIAR A ACTUALUSER
     }
 
     fetch(API_URL + '/routines', options)
@@ -35,7 +50,7 @@ function Home() {
     <div className="flex flex-col p-4 bg-slate-700 w-full space-y-4">
       <div>
         <h1 className='text-white font-bold text-2xl uppercase'>Hola,</h1>
-        <h1 className="text-orange-300 font-bold text-2xl uppercase">{actualUser || "natt"}</h1>
+        <h1 className="text-orange-300 font-bold text-2xl uppercase">{username || ""}</h1>
       </div>
       <h3 className="text-white font-bold text-2xl uppercase">Tu semana</h3>
       <MonthTrackerTag days={[1, 2, 3, 4, 5, 6, 7]} />
@@ -47,9 +62,6 @@ function Home() {
       </Link>
       <h3 className="text-white font-bold text-2xl uppercase">Rutinas</h3>
       <div className="flex flex-col justify-center items-center space-y-4">
-        <RoutineTag name={"Triceps"} color={"blue"} />
-        <RoutineTag name={"Espalda"} color={"yellow"} />
-        <RoutineTag name={"Croissant"} color={"emerald"} />
 
         {routines?.map((routine, index) => (
           <Link key={index} to={`/home/${routine.name}`} className='w-full'>
