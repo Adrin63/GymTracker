@@ -74,7 +74,7 @@ function Home() {
       </div>
       <h3 className="text-white font-bold text-2xl uppercase">Tu semana</h3>
       <MonthTrackerTag days={[1, 2, 3, 4, 5, 6, 7]} />
-      <WeekTrackerTag progress={4} total={5}/>
+      <WeekTrackerTag progress={3} total={4}/>
 
       <Link to={''}>
         <button className="p-3 rounded-3xl w-full font-bold text-xl bg-orange-300 text-slate-700">
