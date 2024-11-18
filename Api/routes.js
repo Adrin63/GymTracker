@@ -52,6 +52,11 @@ router.get('/actualUser', checkToken, async (req,res) => {
   }
 });
 
+router.get('/logout', function(req, res) {
+  res.clearCookie('token');
+  res.send('Logout hecho correctamente');
+});
+
 router.post('/register', async (req, res) => {
   try {
     const { name, password } = req.body;
