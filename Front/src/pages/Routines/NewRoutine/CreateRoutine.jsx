@@ -11,7 +11,7 @@ function NewRoutine() {
 
     const redirect = useNavigate();
 
-    const {actualUser} = useContext(Context);
+    const { actualUser } = useContext(Context);
 
     //NAME AND COLOR
     const [selectedName, setSelectedName] = useState("");
@@ -37,7 +37,16 @@ function NewRoutine() {
             .then(data => { setMuscularGroups(data); setIsLoading(false); })
             .catch(err => console.log(err));
 
-        fetch(API_URL + '/allRoutineNames')
+
+        const options = {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }
+
+        fetch(API_URL + '/allRoutineNames', options)
             .then(resp => resp.json())
             .then(data => { const aux = data?.map((routine) => routine.name); setAllRoutineNames(aux) })
             .catch(err => console.log(err));
@@ -64,7 +73,7 @@ function NewRoutine() {
             body: JSON.stringify(values)
         }
 
-        fetch(API_URL + '/routines', options)
+        fetch(API_URL + '/createRoutine', options)
             .then(resp => resp.json())
             .then(data => {
                 redirect('/home');

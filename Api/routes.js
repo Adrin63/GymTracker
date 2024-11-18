@@ -21,7 +21,7 @@ const checkToken = (req, res, next) => {
 
   if (!token) {
     console.log('no token')
-    return res.status(401).json({ error: 'No token'});
+    return res.status(401).json({ error: 'No token' });
   }
 
   try {
@@ -32,27 +32,27 @@ const checkToken = (req, res, next) => {
   } catch (error) {
     return res.status(401).json({ error: 'Invalid token' });
   }
-}; 
+};
 
 //USERS
 
 router.get('/allUsers', async (req, res) => await readItems(req, res, Users));
 
-router.get('/actualUser', checkToken, async (req,res) => {
-  try{
+router.get('/actualUser', checkToken, async (req, res) => {
+  try {
     const user = await Users.findByPk(req.userId);
     console.log('a ', user)
     if (!user) {
       return res.status(404).json({ error: 'No existe' });
     }
     console.log(user)
-    res.json({name: user.name, userId: user.id});
-  }catch (error){
-    res.status(500).json({error: "Error"});
+    res.json({ name: user.name, userId: user.id });
+  } catch (error) {
+    res.status(500).json({ error: "Error" });
   }
 });
 
-router.get('/logout', function(req, res) {
+router.get('/logout', function (req, res) {
   res.clearCookie('token');
   res.send('Logout hecho correctamente');
 });
@@ -90,7 +90,7 @@ router.post('/login', async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: 'Contrasenya mal' });
     }
-    
+
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '2h' });
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 });
     res.json({ userId: user.id });
@@ -111,7 +111,7 @@ router.post('/routine', checkToken, async (req, res) => {
     const userId = req.userId;
     const name = req.body.name;
 
-    let item = await Routines.findOne({ where: {name}, include: {model: Users, attributes: ["id"]}});
+    let item = await Routines.findOne({ where: { name }, include: { model: Users, attributes: ["id"] } });
 
     if (!item) {
       return res.status(404).json({ error: "Rutina no encontrada" });
@@ -119,9 +119,8 @@ router.post('/routine', checkToken, async (req, res) => {
 
     console.log('usuario actual:', userId, 'usuario del item', item.user.id)
 
-    if(userId != item.user.id)
-    {
-      return res.status(401).json({ error: "No es el usuario correcto"});
+    if (userId != item.user.id) {
+      return res.status(401).json({ error: "No es el usuario correcto" });
     }
 
     res.json(item);
@@ -131,16 +130,30 @@ router.post('/routine', checkToken, async (req, res) => {
   }
 });
 
-router.get('/allRoutineNames', async (req, res) => await readItems(req, res, Routines));//ALL ROUTINES
+router.post('/allRoutineNames', checkToken, async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    let items = await Routines.findAll({where: { userId }});
+
+    res.json(items);
+  }
+  catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 router.post('/routines', checkToken, async (req, res) => {
   try {
     const userId = req.userId;
-    
+
+
     if (!userId) {
       return res.status(400).json({ error: "No hay usuario" });
     }
 
     let items = await Routines.findAll({ where: { userId }, include: { model: Users, attributes: ["name"] } });
+
     res.json(items);
 
   } catch (error) {
