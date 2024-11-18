@@ -9,7 +9,7 @@ import { API_URL } from '../config.js';
 function Home() {
 
   const { actualUser } = useContext(Context);
-  
+
   const [username, setUsername] = useState("");
   const [routines, setRoutines] = useState([]);
 
@@ -25,9 +25,9 @@ function Home() {
     }
 
     fetch(API_URL + '/actualUser', options)
-    .then(resp => resp.json())
-    .then(data => setUsername(data.name))
-    .catch(err => console.log(err));
+      .then(resp => resp.json())
+      .then(data => setUsername(data.name))
+      .catch(err => console.log(err));
   })
 
   useEffect(() => {
@@ -42,7 +42,7 @@ function Home() {
 
     fetch(API_URL + '/routines', options)
       .then(resp => resp.json())
-      .then(data => {setRoutines(data)})
+      .then(data => { setRoutines(data) })
       .catch(err => console.log(err));
   }, [])
 

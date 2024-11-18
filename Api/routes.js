@@ -63,7 +63,7 @@ router.post('/register', async (req, res) => {
 
     const newUser = await Users.create({ name, password });
 
-    const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '2h' });
+    const token = jwt.sign({ userId: newUser.id }, SECRET_KEY, { expiresIn: '2h' });
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 });
 
     res.json({ message: 'Register hecho', userId: newUser.id });
@@ -100,6 +100,32 @@ router.get('/muscularGroups', async (req, res) => await readItems(req, res, Musc
 router.post('/muscularGroups', async (req, res) => await createItem(req, res, MuscularGroup));
 
 //ROUTINES
+
+router.post('/routine', checkToken, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const name = req.body.name;
+
+    let item = await Routines.findOne({ where: {name}, include: {model: Users, attributes: ["id"]}});
+
+    if (!item) {
+      return res.status(404).json({ error: "Rutina no encontrada" });
+    }
+
+    console.log('usuario actual:', userId, 'usuario del item', item.user.id)
+
+    if(userId != item.user.id)
+    {
+      return res.status(401).json({ error: "No es el usuario correcto"});
+    }
+
+    res.json(item);
+
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 router.get('/allRoutineNames', async (req, res) => await readItems(req, res, Routines));//ALL ROUTINES
 router.post('/routines', checkToken, async (req, res) => {
   try {

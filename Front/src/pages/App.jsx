@@ -23,6 +23,7 @@ function App() {
             .then(resp => resp.json())
             .then(data => {
                 if (data.error) {
+                    redirect('/')
                     return;
                 }
 
