@@ -111,13 +111,11 @@ router.post('/routine', checkToken, async (req, res) => {
     const userId = req.userId;
     const name = req.body.name;
 
-    let item = await Routines.findOne({ where: { name }, include: { model: Users, attributes: ["id"] } });
+    let item = await Routines.findOne({ where: { name }, include: [{ model: Users, attributes: ["id"] }, { model: MuscularGroup, include: { model: Exercises } }] });
 
     if (!item) {
       return res.status(404).json({ error: "Rutina no encontrada" });
     }
-
-    console.log('usuario actual:', userId, 'usuario del item', item.user.id)
 
     if (userId != item.user.id) {
       return res.status(401).json({ error: "No es el usuario correcto" });
@@ -134,7 +132,7 @@ router.post('/allRoutineNames', checkToken, async (req, res) => {
   try {
     const userId = req.userId;
 
-    let items = await Routines.findAll({where: { userId }});
+    let items = await Routines.findAll({ where: { userId } });
 
     res.json(items);
   }
@@ -143,10 +141,10 @@ router.post('/allRoutineNames', checkToken, async (req, res) => {
   }
 });
 
+//Devuelve rutinas
 router.post('/routines', checkToken, async (req, res) => {
   try {
     const userId = req.userId;
-
 
     if (!userId) {
       return res.status(400).json({ error: "No hay usuario" });
@@ -161,7 +159,44 @@ router.post('/routines', checkToken, async (req, res) => {
   }
 });
 
-router.post('/createRoutine', async (req, res) => await createItem(req, res, Routines));
+router.post('/createRoutine', checkToken, async (req, res) => {
+  try {
+    const { name, color, muscularGroups } = req.body;
+    const userId = req.userId;
+
+    const routine = await Routines.create({
+      userId,
+      name,
+      color,
+    });
+
+    for (const group of muscularGroups) {
+      const muscularGroup = await MuscularGroup.create({
+        name: group.name,
+        routineId: routine.id,
+      });
+
+      for (const exercise of group.exercises) {
+        await Exercises.create({
+          name: exercise.name,
+          info: exercise.info || null,
+          unit: exercise.unit || null,
+          muscularGroupId: muscularGroup.id,
+        });
+      }
+    }
+
+    res.status(201).json({ message: 'Rutina creada'});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
+
+
 
 
 module.exports = router;

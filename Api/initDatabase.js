@@ -29,7 +29,8 @@ async function iniDB(forceStart) {
         await sequelize.sync({ force: true });
         console.log('Tables created.');
 
-        await insertInitialData();
+        //await insertInitialData();
+        
     } catch (error) {
         console.error('Error initializing database:', error);
     }

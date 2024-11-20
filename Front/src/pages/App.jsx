@@ -27,7 +27,7 @@ function App() {
                     return;
                 }
 
-                setActualUser(data.userId)
+                setActualUser(data)
                 redirect('/home')
             })
             .catch(err => console.log("No hay usuario"));

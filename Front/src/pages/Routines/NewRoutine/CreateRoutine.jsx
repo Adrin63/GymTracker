@@ -11,8 +11,6 @@ function NewRoutine() {
 
     const redirect = useNavigate();
 
-    const { actualUser } = useContext(Context);
-
     //NAME AND COLOR
     const [selectedName, setSelectedName] = useState("");
     const [selectedColor, setSelectedColor] = useState("blue");
@@ -20,11 +18,22 @@ function NewRoutine() {
     const [allRoutineNames, setAllRoutineNames] = useState([]);
     const [doesRoutineExist, setDoesRoutineExist] = useState(false);
 
-    const [isLoading, setIsLoading] = useState(true);
+    //loading outdated
+    const [isLoading, setIsLoading] = useState(false);
     const [onExercises, setOnExercises] = useState(false);
 
     //MUSCLES
-    const [muscularGroups, setMuscularGroups] = useState([{}]);
+    const muscularGroups = [
+        { name: 'Biceps', image: 'Biceps.png' },
+        { name: 'Triceps', image: 'Triceps.png' },
+        { name: 'Hombros', image: 'Hombros.png' },
+        { name: 'Espalda', image: 'Espalda.png' },
+        { name: 'Pecho', image: 'Pecho.png' },
+        { name: 'Abdominales', image: 'Abdominales.png' },
+        { name: 'Piernas', image: 'Piernas.png' },
+        { name: 'Cardio', image: 'Cardio.png' },
+    ]
+    
     const [selectedMuscularGroups, setSelectedMuscularGroups] = useState([]);
 
     //EXERCISES
@@ -32,12 +41,8 @@ function NewRoutine() {
 
     useEffect(() => {
 
-        fetch(API_URL + '/muscularGroups')
-            .then(resp => resp.json())
-            .then(data => { setMuscularGroups(data); setIsLoading(false); })
-            .catch(err => console.log(err));
-
-
+        window.scrollTo(0, 0);
+        
         const options = {
             method: 'POST',
             credentials: 'include',
@@ -55,14 +60,15 @@ function NewRoutine() {
     const createRoutine = () => {
 
         const values = {
-            userId: actualUser,
             name: selectedName,
             color: selectedColor,
             muscularGroups: selectedMuscularGroups.map(muscle => ({
                 name: muscle,
-                exercises: selectedExercises
+                exercises: selectedExercises.find(group => group.name === muscle)?.exercises || []
             }))
         };
+
+        console.log(values);
 
         const options = {
             method: 'POST',
@@ -103,7 +109,7 @@ function NewRoutine() {
         let aux = false;
 
         if (onExercises) {
-            //recorrer ejercicios que todos tengan nombre
+            //Falta recorrer ejercicios que todos tengan nombre
             aux = true;
         }
         else {
@@ -128,7 +134,7 @@ function NewRoutine() {
 
             <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/CreateRoutine/muscles` : `/home`} />
 
-            <div className="pt-14">
+            <div className="pt-[106px]">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :
                     <>
                         <Context.Provider value={{ muscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups, selectedExercises, setSelectedExercises, doesRoutineExist }}>

@@ -88,8 +88,8 @@ Routines.belongsTo(Users);
 AsistedDays.belongsTo(Routines);
 Routines.hasMany(AsistedDays);
 
-Routines.belongsToMany(MuscularGroup, {through: 'rutines_has_musculargroup'});
-MuscularGroup.belongsToMany(Routines, {through: 'rutines_has_musculargroup'});
+Routines.hasMany(MuscularGroup);
+MuscularGroup.belongsTo(Routines);
 
 MuscularGroup.hasMany(Exercises);
 Exercises.belongsTo(MuscularGroup);

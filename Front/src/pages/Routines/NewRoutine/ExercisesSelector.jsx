@@ -35,10 +35,6 @@ function ExercisesSelector() {
         setSelectedExercises(newExercises);
     }
 
-    useEffect(() => {console.log(selectedExercises)}, [selectedExercises])
-
-    // useEffect(() => console.log(exercisesByGroup), [exercisesByGroup])
-
     const handleNameChange = (muscleGroupToUpdate, index, newName) => {
         const updatedExercises = selectedExercises.map((group) =>
             group.name === muscleGroupToUpdate

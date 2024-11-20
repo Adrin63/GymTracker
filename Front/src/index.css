@@ -6,6 +6,5 @@ body {
     background-color: #324154; /* Change this to your desired hex code */
     margin: 0;
     padding: 0;
-    padding-top: 30px;
     min-height: 100vh;  /* Ensures the background color fills the entire screen */
   }

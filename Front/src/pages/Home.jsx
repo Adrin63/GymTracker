@@ -6,32 +6,23 @@ import { Link, useNavigate } from 'react-router-dom';
 import AddButton from '../components/AddButton.jsx';
 import { API_URL } from '../config.js';
 import WeekTrackerTag from '../components/WeekTrackerTag.jsx';
+import TopBorder from '../components/TopBorder.jsx'
+import Loading from '../components/Loading.jsx';
 
 function Home() {
 
   const { actualUser } = useContext(Context);
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("username");
   const [routines, setRoutines] = useState([]);
+  const [routinesLoading, setRoutinesLoading] = useState(true);
 
   const redirect = useNavigate();
 
   useEffect(() => {
-    const options = {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    }
+    window.scrollTo(0, 0);
 
-    fetch(API_URL + '/actualUser', options)
-      .then(resp => resp.json())
-      .then(data => setUsername(data.name))
-      .catch(err => console.log(err));
-  })
-
-  useEffect(() => {
+    setUsername(actualUser.name)
 
     const options = {
       method: 'POST',
@@ -43,8 +34,8 @@ function Home() {
 
     fetch(API_URL + '/routines', options)
       .then(resp => resp.json())
-      .then(data => { setRoutines(data) })
-      .catch(err => console.log(err));
+      .then(data => { setRoutines(data); setRoutinesLoading(false) })
+      .catch(err => { console.log(err); setRoutinesLoading(true) });
   }, [])
 
   const logout = () => {
@@ -63,6 +54,7 @@ function Home() {
 
   return (
     <div className="flex flex-col p-4 bg-slate-700 w-full space-y-4">
+      <TopBorder />
       <div className='flex flex-row justify-between'>
         <div>
           <h1 className='text-white font-bold text-2xl uppercase'>Hola,</h1>
@@ -74,7 +66,7 @@ function Home() {
       </div>
       <h3 className="text-white font-bold text-2xl uppercase">Tu semana</h3>
       <MonthTrackerTag days={[1, 2, 3, 4, 5, 6, 7]} />
-      <WeekTrackerTag progress={3} total={4}/>
+      <WeekTrackerTag progress={3} total={4} />
 
       <Link to={''}>
         <button className="p-3 rounded-3xl w-full font-bold text-xl bg-orange-300 text-slate-700">
@@ -84,14 +76,24 @@ function Home() {
       <h3 className="text-white font-bold text-2xl uppercase">Rutinas</h3>
       <div className="flex flex-col justify-center items-center space-y-4">
 
-        {routines?.map((routine, index) => (
-          <Link key={index} to={`/home/${routine.name}`} className='w-full'>
-            <RoutineTag name={routine.name} color={routine.color} />
-          </Link>
-        ))
+
+        {routinesLoading ? <Loading /> :
+          <>
+            {
+              routines.length <= 0 ?
+                <div className='flex justify-center items-center uppercase bg-slate-300 text-slate-500 w-full p-4 rounded-lg font-bold'>
+                  No hay rutinas aún
+                </div> :
+                routines?.map((routine, index) => (
+                  <Link key={index} to={`/home/${routine.name}`} className='w-full'>
+                    <RoutineTag name={routine.name} color={routine.color} />
+                  </Link>
+                ))
+              }
+              <AddButton functionToDo={() => redirect("/CreateRoutine/muscles")} />
+          </>
         }
 
-        <AddButton functionToDo={() => redirect("/CreateRoutine/muscles")} />
       </div>
     </div>
   )
