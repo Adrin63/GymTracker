@@ -19,14 +19,15 @@ function App() {
             },
         }
 
+        
         fetch(API_URL + '/actualUser', options)
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.error) {
-                    redirect('/')
-                    return;
-                }
-
+        .then(resp => resp.json())
+        .then(data => {
+            if (data.error) {
+                redirect('/')
+                return;
+            }
+            
                 setActualUser(data)
                 redirect('/home')
             })

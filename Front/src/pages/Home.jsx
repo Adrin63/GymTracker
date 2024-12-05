@@ -22,6 +22,7 @@ function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
+    console.log('aaa', actualUser)
     setUsername(actualUser.name)
 
     const options = {

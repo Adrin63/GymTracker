@@ -55,7 +55,8 @@ function Register() {
                     return;
                 }
 
-                setActualUser(data.name);
+                console.log('Register:', data)
+                setActualUser(data);
                 redirect('/home');
             })
             .catch(err => console.log(err))

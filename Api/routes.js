@@ -71,7 +71,7 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign({ userId: newUser.id }, SECRET_KEY, { expiresIn: '2h' });
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 });
 
-    res.json({ message: 'Register hecho', userId: newUser.id });
+    res.json({ message: 'Register hecho', name: name, userId: newUser.id });
 
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -93,7 +93,7 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, { expiresIn: '2h' });
     res.cookie('token', token, { httpOnly: false, maxAge: 7200000 });
-    res.json({ userId: user.id });
+    res.json({name: name, userId: user.id });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

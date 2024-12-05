@@ -4,9 +4,9 @@ import { useContext, useState } from "react";
 import { API_URL } from "../../config";
 import Loading from "../../components/Loading";
 
-function Landing(){
-    
-    const {setActualUser} = useContext(Context);
+function Landing() {
+
+    const { setActualUser } = useContext(Context);
     const redirect = useNavigate();
 
     const [name, setName] = useState("");
@@ -20,7 +20,7 @@ function Landing(){
         setIsLoading(true);
         e.preventDefault();
 
-        console.log('Intenta log', name," ", password);
+        console.log('Intenta log', name, " ", password);
 
         const values = {
             name: name,
@@ -32,38 +32,38 @@ function Landing(){
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
-              },
+            },
             body: JSON.stringify(values)
         }
 
-        
-        fetch(API_URL+'/login', options)
-        .then(resp => {
-            if(resp.status == 401)
-            {
-                setIsLoading(false);
-                setStatus("Contraseña equivocada");
-                return;
-            }
-            else if(resp.status == 404)
-            {
-                setIsLoading(false);
-                setStatus("Este usuario no existe");
-                return;
-            }
+
+        fetch(API_URL + '/login', options)
+            .then(resp => {
+                if (resp.status == 401) {
+                    setIsLoading(false);
+                    setStatus("Contraseña equivocada");
+                    return;
+                }
+                else if (resp.status == 404) {
+                    setIsLoading(false);
+                    setStatus("Este usuario no existe");
+                    return;
+                }
                 return resp.json();
-        })
-        .then(data => {       
-                setActualUser(data.userId);
+            })
+            .then(data => {
+
+                console.log('Landing:', data)
+                setActualUser(data);
                 redirect('/home');
-        })
-        .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err))
     }
 
 
     return (
         <div className="bg-slate-700 w-full h-screen flex flex-col items-center justify-center space-y-5">
-            <img src="/GymTracker.png" className="w-1/2 mb-3"/>
+            <img src="/GymTracker.png" className="w-1/2 mb-3" />
             <form onSubmit={login} className="space-y-4 flex flex-col items-center justify-center">
                 <div>
                     <input
@@ -77,16 +77,16 @@ function Landing(){
                         value={password} className="shadow appearance-none border
                     rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="*****************************" />
                 </div>
-            <button className="font-bold bg-orange-400 w-1/2 text-center rounded p-2 text-white" type="submit">
-                <h1 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}>LOGIN</h1>
-            </button>
+                <button className="font-bold bg-orange-400 w-1/2 text-center rounded p-2 text-white" type="submit">
+                    <h1 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}>LOGIN</h1>
+                </button>
             </form>
             <div className="flex flex-row w-screen items-center justify-center">
-                <hr className="w-1/3 h-0.5 my-4 bg-white border-0 rounded"/>
+                <hr className="w-1/3 h-0.5 my-4 bg-white border-0 rounded" />
                 <h3 className="text-white p-3">OR</h3>
-                <hr className="w-1/3 h-0.5 my-4 bg-white border-0 rounded"/>
+                <hr className="w-1/3 h-0.5 my-4 bg-white border-0 rounded" />
             </div>
-                <Link to='/register' className="text-orange-300">REGISTER</Link>
+            <Link to='/register' className="text-orange-300">REGISTER</Link>
             <div className="flex items-center justify-center h-16">
                 {isLoading ? <Loading /> : <h1 className="text-red-600 p-4 mt-3">{status || '\u00A0'}</h1>}
             </div>

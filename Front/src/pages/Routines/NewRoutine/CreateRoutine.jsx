@@ -130,7 +130,7 @@ function NewRoutine() {
 
 
     return (
-        <div className="bg-slate-700">
+        <div>
 
             <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/CreateRoutine/muscles` : `/home`} />
 
