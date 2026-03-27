@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
 
 import Loading from "../../../components/Loading";
 import Context from "../../../Context";
@@ -10,6 +10,7 @@ import Header from "../../../components/Header";
 function NewRoutine() {
 
     const redirect = useNavigate();
+    const location = useLocation();
 
     //NAME AND COLOR
     const [selectedName, setSelectedName] = useState("");
@@ -20,7 +21,6 @@ function NewRoutine() {
 
     //loading outdated
     const [isLoading, setIsLoading] = useState(false);
-    const [onExercises, setOnExercises] = useState(false);
 
     //MUSCLES
     const muscularGroups = [
@@ -33,15 +33,32 @@ function NewRoutine() {
         { name: 'Piernas', image: 'Piernas.png' },
         { name: 'Cardio', image: 'Cardio.png' },
     ]
+
+    //COLORS
+    const pickableColors = [
+        'blue',
+        'orange',
+        'yellow',
+        'lime', 
+        'rose', 
+        'violet', 
+        'emerald',
+        'pink'
+     ]
+    
+    
     
     const [selectedMuscularGroups, setSelectedMuscularGroups] = useState([]);
 
-    //EXERCISES
-    const [selectedExercises, setSelectedExercises] = useState([{}]);
+    const [selectedExercisesOfMuscularGroups, setSelectedExercisesOfMuscularGroups] = useState([{}]);
 
     useEffect(() => {
 
         window.scrollTo(0, 0);
+
+        const randomColor = Math.floor(Math.random() * pickableColors.length);
+        
+        setSelectedColor(pickableColors[randomColor]);
         
         const options = {
             method: 'POST',
@@ -51,20 +68,21 @@ function NewRoutine() {
             },
         }
 
-        fetch(API_URL + '/allRoutineNames', options)
+        fetch(API_URL + '/routines', options)
             .then(resp => resp.json())
             .then(data => { const aux = data?.map((routine) => routine.name); setAllRoutineNames(aux) })
             .catch(err => console.log(err));
     }, [])
 
     const createRoutine = () => {
+        console.log("Creando rutina...");
 
         const values = {
             name: selectedName,
             color: selectedColor,
             muscularGroups: selectedMuscularGroups.map(muscle => ({
                 name: muscle,
-                exercises: selectedExercises.find(group => group.name === muscle)?.exercises || []
+                exercises: selectedExercisesOfMuscularGroups.find(group => group.name === muscle)?.exercises || []
             }))
         };
 
@@ -87,6 +105,7 @@ function NewRoutine() {
             .catch(err => console.log(err))
     }
 
+    //CHECK IF ROUTINE EXISTS
     useEffect(() => {
         const matchedRoutines = allRoutineNames?.filter((rutine) => rutine.toUpperCase() == selectedName.toUpperCase());
 
@@ -96,10 +115,11 @@ function NewRoutine() {
     const onButtonPressed = () => {
 
         if (canBePressedTheButton()) {
-            if (onExercises) {
+            console.log(location.pathname);
+            if (location.pathname == "/CreateRoutine/exercises") {//Exercises selected
                 createRoutine();
             }
-            else {
+            else {//Muscles Selected
                 redirect('exercises')
             }
         }
@@ -108,7 +128,7 @@ function NewRoutine() {
     const canBePressedTheButton = () => {
         let aux = false;
 
-        if (onExercises) {
+        if (location.pathname == 'exercises') {
             //Falta recorrer ejercicios que todos tengan nombre
             aux = true;
         }
@@ -120,10 +140,13 @@ function NewRoutine() {
     }
 
     const handleGroupSelected = (muscle) => {
-        if (selectedMuscularGroups.includes(muscle.name)) {
-            setSelectedMuscularGroups(selectedMuscularGroups.filter(aux => aux !== muscle.name));
+        
+        const exists = selectedMuscularGroups.filter(item => item.name === muscle.name).length > 0;
+        
+        if (exists) {
+            setSelectedMuscularGroups(selectedMuscularGroups.filter(aux => aux.name != muscle.name));
         } else {
-            setSelectedMuscularGroups([...selectedMuscularGroups, muscle.name]);
+            setSelectedMuscularGroups([...selectedMuscularGroups, { name: muscle.name, exercises: [{ name: '', info: '', unit: '' }] }]);
         }
     }
 
@@ -132,12 +155,12 @@ function NewRoutine() {
     return (
         <div>
 
-            <Header title={onExercises ? selectedName : "Nueva Rutina"} route={onExercises ? `/CreateRoutine/muscles` : `/home`} />
+            <Header title={location.pathname == 'exercises' ? selectedName : "Nueva Rutina"} route={location.pathname == 'exercises' ? `/CreateRoutine/muscles` : `/home`} />
 
-            <div className="pt-[106px]">
+            <div className="pt-[106px] pb-[26px]">
                 {isLoading ? <div className="flex items-center justify-center h-screen"><Loading /></div> :
                     <>
-                        <Context.Provider value={{ muscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setOnExercises, setSelectedMuscularGroups, selectedExercises, setSelectedExercises, doesRoutineExist }}>
+                        <Context.Provider value={{ muscularGroups, selectedMuscularGroups, handleGroupSelected, selectedName, setSelectedName, selectedColor, setSelectedColor, setSelectedMuscularGroups, selectedExercises: selectedExercisesOfMuscularGroups, setSelectedExercises: setSelectedExercisesOfMuscularGroups, doesRoutineExist }}>
                             <Outlet />
                         </Context.Provider>
 

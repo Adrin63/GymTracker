@@ -22,7 +22,7 @@ function ExerciseInputTag({ name, info, unit, onNameChange, onInfoChange }) {
     return (
         <div className='flex flex-row space-x-2'>
             <input
-                onInput={(e) => { if (e.target.value.length < 38) onNameChange(e.target.value) }}
+                onInput={(e) => { if (e.target.value.length < 38) exercise.name = e.target.value }}
                 value={name}
                 className="appearance-none border rounded w-full p-3 text-gray-700 leading-tight" id="name" type="text" placeholder={"Nuevo Ejercicio"} />
             <input

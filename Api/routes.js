@@ -128,20 +128,20 @@ router.post('/routine', checkToken, async (req, res) => {
   }
 });
 
-router.post('/allRoutineNames', checkToken, async (req, res) => {
-  try {
-    const userId = req.userId;
+// router.post('/allRoutineNames', checkToken, async (req, res) => {
+//   try {
+//     const userId = req.userId;
 
-    let items = await Routines.findAll({ where: { userId } });
+//     let items = await Routines.findAll({ where: { userId } });
 
-    res.json(items);
-  }
-  catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+//     res.json(items);
+//   }
+//   catch (error) {
+//     res.status(400).json({ error: error.message });
+//   }
+// });
 
-//Devuelve rutinas
+//Devuelve rutinas de un usuario
 router.post('/routines', checkToken, async (req, res) => {
   try {
     const userId = req.userId;

@@ -20,7 +20,7 @@ function Landing() {
         setIsLoading(true);
         e.preventDefault();
 
-        console.log('Intenta log', name, " ", password);
+        console.log('Intenta log de: ', name, " ", password);
 
         const values = {
             name: name,
@@ -39,15 +39,16 @@ function Landing() {
 
         fetch(API_URL + '/login', options)
             .then(resp => {
+                console.log(resp);
                 if (resp.status == 401) {
                     setIsLoading(false);
                     setStatus("Contraseña equivocada");
-                    return;
+                    throw new Error("401");
                 }
                 else if (resp.status == 404) {
                     setIsLoading(false);
                     setStatus("Este usuario no existe");
-                    return;
+                    throw new Error("404");
                 }
                 return resp.json();
             })
@@ -78,7 +79,7 @@ function Landing() {
                     rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="*****************************" />
                 </div>
                 <button className="font-bold bg-orange-400 w-1/2 text-center rounded p-2 text-white" type="submit">
-                    <h1 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}>LOGIN</h1>
+                    <h1 style={{ textShadow: "1px 1px 1px rgba(0, 0, 0, 1)" }}>LOGIN</h1>
                 </button>
             </form>
             <div className="flex flex-row w-screen items-center justify-center">

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 function MuscularGroupsTag({name, img, isSelected}) {
     return (
         <div className={`text-center text-white font-bold p-2 rounded-lg shadow uppercase ${isSelected ? "bg-orange-300" : "bg-slate-500"}`}>

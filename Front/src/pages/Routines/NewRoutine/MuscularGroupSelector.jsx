@@ -30,9 +30,6 @@ function MuscularGroupSelector() {
         '@everyone'
     ];
 
-    useEffect(() => {
-        setOnExercises(false);
-    }, [])
 
     useEffect(() => {
         let aux;
@@ -46,12 +43,14 @@ function MuscularGroupSelector() {
         setRandomInputText(inputText[aux]);
     }, [newNameTrigger])
 
+    useEffect(() => {console.log(selectedMuscularGroups)}, [selectedMuscularGroups])
+    
     return (
         <>
             <div className='flex flex-row justify-between px-3 pt-2 items-center'>
                 <h1 className='text-white font-bold text-lg uppercase'>Nombre y color</h1>
                 <h1 className="text-red-400">{doesRoutineExist ? 'Esta rutina ya existe' : ' '}</h1>
-                
+
             </div>
             <div className="flex flex-col py-2 space-y-5 items-center">
                 <div className="flex flex-row space-x-4 w-screen px-3 justify-center items-center">
@@ -72,7 +71,8 @@ function MuscularGroupSelector() {
                         muscularGroups?.map((muscles, index) => (
                             <div className="w-1/2 p-3 flex" key={index} onClick={() => handleGroupSelected(muscles)}>
                                 <MuscularGroupTag name={muscles.name} img={muscles.image}
-                                    isSelected={selectedMuscularGroups.includes(muscles.name)} />
+                                    isSelected={
+                                        selectedMuscularGroups.some(musc =>  musc.name === muscles.name)} />
                             </div>
                         ))
                     }
